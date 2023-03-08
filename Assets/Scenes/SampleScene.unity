@@ -1783,7 +1783,7 @@ GameObject:
   - component: {fileID: 2050049926}
   - component: {fileID: 2050049927}
   m_Layer: 0
-  m_Name: Drone-2
+  m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1809,7 +1809,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d2282bfbd63d14e1fa82ed3641780d12, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1830,7 +1830,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 1d59a5535ae9143e5b81b4c8cabfce5a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c33cf60ecf47491d90ed5133d79e1ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1875,7 +1875,7 @@ MonoBehaviour:
   batteryFill: {fileID: 1278333706}
   projectile: {fileID: 4105290003389523190, guid: d99b8213011fe4dadbfa8610ec7dc555, type: 3}
   turret: {fileID: 1029763176}
-  bulletForce: 70
+  bulletForce: 60
 --- !u!50 &2050049926
 Rigidbody2D:
   serializedVersion: 4
