@@ -1,19 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Object = System.Object;
 
 public class Drone : MonoBehaviour
 {
     private Rigidbody2D _rb;
+    private string currentInstructions;
 
     [Header("Movement")] 
     public float thrust = 100;
     public float turnSpeed = 2;
     public float ammo = 100;
-
 
     [Header("Resources")] 
     public float battery = 100;
@@ -24,6 +27,10 @@ public class Drone : MonoBehaviour
     public GameObject turret;
     public float bulletForce;
 
+    [Header("Programming Interface")] 
+    public InputField instructionInputField;
+    public InputField outputConsole;
+    
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -36,6 +43,34 @@ public class Drone : MonoBehaviour
             Shoot();
             ammo -= 1;
         }
+    }
+
+    private void UpdateConsole(string newText)
+    {
+        const int maxLines = 7;
+        var oldLines = outputConsole.text.Split("\n");
+        var newLines = newText.Split("\n");
+        
+        if (newLines.Length > 3)
+        {
+            newLines = new[] {newLines[0], newLines[1], "...",  newLines[^1]};
+        }
+
+        var totalLines = oldLines.Length + newLines.Length;
+        if (totalLines > maxLines)
+        {
+            oldLines = oldLines.Skip(totalLines - maxLines).ToArray();
+        }
+
+        outputConsole.text = string.Join("\n", oldLines.Concat(newLines).ToArray());
+    }
+
+
+    public void InstallInstructions()
+    {
+        currentInstructions = instructionInputField.text;
+        UpdateConsole("New instructions installed:\n" + currentInstructions);
+        Debug.Log("New instructions installed:\n" + currentInstructions);
     }
 
     private void Turn(Transform t, float units)
@@ -67,12 +102,22 @@ public class Drone : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
+            if (battery <= 0)
+            {
+                return;
+            }
+            
             _rb.AddForce(Angler.AngleVector(transform) 
                          * (thrust * Time.deltaTime));
             
             battery -= 0.1f;
             batteryFill.transform.localScale += new Vector3(-0.001f, 0, 0);
             batteryFill.transform.position += new Vector3(0.00015f, 0, 0);
+        }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu");
         }
 
     }
