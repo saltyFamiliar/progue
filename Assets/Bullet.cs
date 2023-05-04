@@ -5,22 +5,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [Header("Properties")]
-    public int lifetime = 1000;
+    public static int lifetime = 200;
     
-    void Start()
-    {
-
-    }
-
-    private void Awake()
-    {
-    }
-
-    void Update()
-    {
-        
-    }
 
     private void FixedUpdate()
     {
@@ -29,5 +15,26 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    
+    // private void OnCollisionEnter2D(Collision2D col)
+    // {
+    //         Destroy(gameObject);
+    // }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Drone") || col.gameObject.CompareTag("Charge"))
+        {
+            return;
+        }
+        
+        Destroy(gameObject);
+        
+        if (col.gameObject.CompareTag("Destructible"))
+        {
+            Destroy(col.gameObject);
+        }
+        
     }
 }

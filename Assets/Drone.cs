@@ -43,6 +43,10 @@ public class Drone : MonoBehaviour
             Shoot();
             ammo -= 1;
         }
+        if (Input.GetKeyDown(KeyCode.DownArrow) && ammo > 0)
+        {
+            InstallInstructions();
+        }
     }
 
     private void UpdateConsole(string newText)
@@ -71,6 +75,68 @@ public class Drone : MonoBehaviour
         currentInstructions = instructionInputField.text;
         UpdateConsole("New instructions installed:\n" + currentInstructions);
         Debug.Log("New instructions installed:\n" + currentInstructions);
+
+        var instructionLines = currentInstructions.Split("\n");
+        
+        foreach (string line in instructionLines)
+        {
+            if (line.Contains("turnr"))
+            {
+                string[] words = line.Split(' ');
+                for (int i = 0; i < words.Length - 1; i++)
+                {
+                    if (words[i] == "turnr")
+                    {
+                        if (int.TryParse(words[i + 1], out int value))
+                        {
+                            Turn(transform, -turnSpeed * value); 
+                        }
+                    }
+                }
+            } else if (line.Contains("turnl"))
+            {
+                string[] words = line.Split(' ');
+                for (int i = 0; i < words.Length - 1; i++)
+                {
+                    if (words[i] == "turnl")
+                    {
+                        if (int.TryParse(words[i + 1], out int value))
+                        {
+                            Turn(transform, turnSpeed * value); 
+                        }
+                    }
+                }
+            } else if (line.Contains("aiml"))
+            {
+                string[] words = line.Split(' ');
+                for (int i = 0; i < words.Length - 1; i++)
+                {
+                    if (words[i] == "aiml")
+                    {
+                        if (int.TryParse(words[i + 1], out int value))
+                        {
+                            Turn(turret.transform, turnSpeed * value); 
+                        }
+                    }
+                }
+            } else if (line.Contains("aimr"))
+            {
+                string[] words = line.Split(' ');
+                for (int i = 0; i < words.Length - 1; i++)
+                {
+                    if (words[i] == "aimr")
+                    {
+                        if (int.TryParse(words[i + 1], out int value))
+                        {
+                            Turn(turret.transform, -turnSpeed * value); 
+                        }
+                    }
+                }
+            } else if (line.Contains("shoot"))
+            {
+                Shoot();
+            }
+        }
     }
 
     private void Turn(Transform t, float units)
@@ -115,12 +181,9 @@ public class Drone : MonoBehaviour
             batteryFill.transform.position += new Vector3(0.00015f, 0, 0);
         }
 
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
     }
+    
+    
 
     private void Shoot()
     {
